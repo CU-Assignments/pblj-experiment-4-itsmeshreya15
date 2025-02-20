@@ -1,0 +1,94 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Card {
+    String symbol;
+    String value;
+
+    Card(String symbol, String value) {
+        this.symbol = symbol;
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return value + " of " + symbol;
+    }
+}
+
+public class CardManager {
+    private List<Card> cards;
+
+    public CardManager() {
+        cards = new ArrayList<>();
+    }
+
+    public void addCard(String symbol, String value) {
+        cards.add(new Card(symbol, value));
+    }
+
+    public void findCardsBySymbol(String symbol) {
+        boolean found = false;
+        for (Card card : cards) {
+            if (card.symbol.equalsIgnoreCase(symbol)) {
+                System.out.println(card);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No cards found with symbol: " + symbol);
+        }
+    }
+
+    public void listAllCards() {
+        if (cards.isEmpty()) {
+            System.out.println("No cards in the collection.");
+        } else {
+            for (Card card : cards) {
+                System.out.println(card);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        CardManager manager = new CardManager();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n1. Add Card");
+            System.out.println("2. Find Cards by Symbol");
+            System.out.println("3. List All Cards");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Card Symbol (e.g., Hearts, Spades): ");
+                    String symbol = scanner.nextLine();
+                    System.out.print("Enter Card Value (e.g., Ace, 2, King): ");
+                    String value = scanner.nextLine();
+                    manager.addCard(symbol, value);
+                    break;
+                case 2:
+                    System.out.print("Enter Symbol to find: ");
+                    symbol = scanner.nextLine();
+                    manager.findCardsBySymbol(symbol);
+                    break;
+                case 3:
+                    manager.listAllCards();
+                    break;
+                case 4:
+                    System.out.println("Exiting program.");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } while (choice != 4);
+
+        scanner.close();
+    }
+}
