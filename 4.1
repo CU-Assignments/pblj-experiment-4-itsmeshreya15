@@ -1,0 +1,127 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Employee {
+    int id;
+    String name;
+    double salary;
+
+    Employee(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Salary: " + salary;
+    }
+}
+
+public class EmployeeManager {
+    private ArrayList<Employee> employees;
+
+    public EmployeeManager() {
+        employees = new ArrayList<>();
+    }
+
+    public void addEmployee(int id, String name, double salary) {
+        employees.add(new Employee(id, name, salary));
+    }
+
+    public void updateEmployee(int id, String newName, double newSalary) {
+        for (Employee employee : employees) {
+            if (employee.id == id) {
+                employee.name = newName;
+                employee.salary = newSalary;
+                System.out.println("Employee updated: " + employee);
+                return;
+            }
+        }
+        System.out.println("Employee with ID " + id + " not found.");
+    }
+
+    public void removeEmployee(int id) {
+        employees.removeIf(employee -> employee.id == id);
+    }
+
+    public void searchEmployee(int id) {
+        for (Employee employee : employees) {
+            if (employee.id == id) {
+                System.out.println("Employee found: " + employee);
+                return;
+            }
+        }
+        System.out.println("Employee with ID " + id + " not found.");
+    }
+
+    public void listEmployees() {
+        if (employees.isEmpty()) {
+            System.out.println("No employees to display.");
+        } else {
+            for (Employee employee : employees) {
+                System.out.println(employee);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        EmployeeManager manager = new EmployeeManager();
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n1. Add Employee");
+            System.out.println("2. Update Employee");
+            System.out.println("3. Remove Employee");
+            System.out.println("4. Search Employee");
+            System.out.println("5. List All Employees");
+            System.out.println("6. Exit");
+            System.out.print("Enter choice: ");
+            choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter ID: ");
+                    int id = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline
+                    System.out.print("Enter Name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter Salary: ");
+                    double salary = scanner.nextDouble();
+                    manager.addEmployee(id, name, salary);
+                    break;
+                case 2:
+                    System.out.print("Enter ID to update: ");
+                    id = scanner.nextInt();
+                    scanner.nextLine();  // Consume newline
+                    System.out.print("Enter new Name: ");
+                    name = scanner.nextLine();
+                    System.out.print("Enter new Salary: ");
+                    salary = scanner.nextDouble();
+                    manager.updateEmployee(id, name, salary);
+                    break;
+                case 3:
+                    System.out.print("Enter ID to remove: ");
+                    id = scanner.nextInt();
+                    manager.removeEmployee(id);
+                    break;
+                case 4:
+                    System.out.print("Enter ID to search: ");
+                    id = scanner.nextInt();
+                    manager.searchEmployee(id);
+                    break;
+                case 5:
+                    manager.listEmployees();
+                    break;
+                case 6:
+                    System.out.println("Exiting program.");
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } while (choice != 6);
+
+        scanner.close();
+    }
+}
